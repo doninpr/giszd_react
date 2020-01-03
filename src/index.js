@@ -1,34 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import {Component} from 'react';
-import ReactMapGL from 'react-map-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
+import React from "react";
+import ReactDOM from "react-dom";
 
-class Map extends Component {
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
-  state = {
-    viewport: {
-      width: 800,
-      height: 600,
-      latitude: 37.7577,
-      longitude: -122.4376,
-      zoom: 8
-    }
-  };
+import App from "./App";
 
-  render() {
-    return (
-      <ReactMapGL mapboxApiAccessToken={'pk.eyJ1IjoiYWxkcmVzIiwiYSI6ImNqcjF2c2V0dTBnaDc0MnJwbmNjczM2ZTgifQ.VNyQzIrHBcpPlUcNbSpYyA'} 
-        {...this.state.viewport}
-        onViewportChange={(viewport) => this.setState({viewport})}
-      />
-    );
-  }
-}
-
+const rootElement = document.getElementById("root");
 ReactDOM.render(
-    <Map />,
-    document.getElementById('root')
-  );
-  
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  rootElement
+);

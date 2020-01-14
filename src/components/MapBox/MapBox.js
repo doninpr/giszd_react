@@ -3,42 +3,40 @@ import { connect } from "react-redux";
 import cx from "classnames";
 import ReactMapGL from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { changeFiltersOnMap } from '../../redux/actions';
+import { changeFiltersOnMap, mapboxViewportChange } from '../../redux/actions';
 
 class MapBox extends React.Component {
   constructor(props) {
     super(props);
     this.props = props;
     this._map = React.createRef();
-    this.changeFiltersOnMap = this.props.changeFiltersOnMap;
-    this.state = {
-      mapboxApiAccessToken: this.props.mapboxApiAccessToken,
-      viewport: this.props.params.START_VIEWPORT,
-      mapStyle: this.props.params.BASE_STYLE,
-    };
   }
 
   updateViewport = viewport => {
-    viewport.mapStyle = this.state.mapStyle;
+  	this.props.mapboxViewportChange(viewport);
     this.setState({viewport});
   };
 
-  render() {
-    if(this._map.current !== null && this.props.isFiltersChanged){
-      console.log(this.props.currentYear);
-      this._map.getMap().setFilter('localrailways', [
-        "all",
-        ["<", ["get", "year"], +this.props.currentYear]
-      ]);
+  setTimelineFilter = ({layer = 'localrailways', year}) => {
+  	this._map.getMap().setFilter(layer, [
+	    "all",
+	    ["<", ["get", "year"], +year]
+	  ]);
+    this.props.changeFiltersOnMap();
+  }
 
-      this.props.changeFiltersOnMap();
+  render() {
+    if(this._map && this.props.isFiltersChanged){
+      this.setTimelineFilter({ year: +this.props.currentYear });
     }
+
     return (
       <ReactMapGL
         ref={map => this._map = map}
-        mapboxApiAccessToken = { this.state.mapboxApiAccessToken }
-        {...this.state.viewport}
+        mapboxApiAccessToken = { this.props.mapboxApiAccessToken }
+        {...this.props.viewport}
         onViewportChange={(viewport) => this.updateViewport(viewport)}
+        onLoad={() => this.setTimelineFilter({ year: +this.props.currentYear })}
       />
     );
   }
@@ -46,12 +44,13 @@ class MapBox extends React.Component {
 
 const mapStateToProps = state => {
   return {
+  	viewport: state.mapbox.viewport,
     isFiltersChanged: state.mapFilters.isFiltersChanged,
-    currentYear: state.timeline.currentYear
+    currentYear: state.timeline.currentYear,
   };
 };
 
 export default connect(
   mapStateToProps,
-  { changeFiltersOnMap },
+  { changeFiltersOnMap, mapboxViewportChange },
 )(MapBox);

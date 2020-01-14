@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import cx from "classnames";
 import ReactMapGL from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { changeFiltersOnMap, mapboxViewportChange } from '../../redux/actions';
+import { changeFiltersOnMap, mapboxViewportChange, mapboxReady } from '../../redux/actions';
 
 class MapBox extends React.Component {
   constructor(props) {
@@ -25,6 +25,11 @@ class MapBox extends React.Component {
     this.props.changeFiltersOnMap();
   }
 
+  mapboxReady = () => {
+    this.props.mapboxReady();
+    this.setTimelineFilter({ year: +this.props.currentYear })
+  }
+
   render() {
     if(this._map && this.props.isFiltersChanged){
       this.setTimelineFilter({ year: +this.props.currentYear });
@@ -36,7 +41,7 @@ class MapBox extends React.Component {
         mapboxApiAccessToken = { this.props.mapboxApiAccessToken }
         {...this.props.viewport}
         onViewportChange={(viewport) => this.updateViewport(viewport)}
-        onLoad={() => this.setTimelineFilter({ year: +this.props.currentYear })}
+        onLoad={() => this.mapboxReady()}
       />
     );
   }
@@ -52,5 +57,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { changeFiltersOnMap, mapboxViewportChange },
+  { changeFiltersOnMap, mapboxViewportChange, mapboxReady },
 )(MapBox);

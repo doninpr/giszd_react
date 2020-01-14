@@ -1,11 +1,5 @@
 import wNumb from "wnumb";
 
-export const VISIBILITY_FILTERS = {
-  ALL: "all",
-  COMPLETED: "completed",
-  INCOMPLETE: "incomplete"
-};
-
 export const MAPBOX = {
 	API_TOKEN: 'pk.eyJ1IjoiZG9uaW5wciIsImEiOiJjaXVxM3E4OTkwMDAwMm9wczBnYjR4bnJoIn0.7drt92qBRl7KJ6dLg0mrww',
   VIEWPORT: {

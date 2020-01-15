@@ -11,6 +11,7 @@
     "classnames": "^2.2.6",
     "graphql": "^14.5.8",
     "jquery": "^3.4.1",
+    "lodash": "^4.17.15",
     "nouislider-react": "^3.3.5",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",

@@ -8,7 +8,7 @@ export const MAPBOX = {
     latitude: 56.056516,
     longitude: 38.263599,
     zoom: 4,
-    mapStyle: 'mapbox://styles/doninpr/ck4y21ecx1kn11crs1arg03xe',
+    mapStyle: 'mapbox://styles/doninpr/ck5fks8oj2cht1ir2dnsnhb6y',
   }
 }
 

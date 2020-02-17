@@ -1,0 +1,45 @@
+.popover-mapstyle {
+	width: 150px;
+}
+
+.popover-mapstyle .col {
+	padding: 5px;
+}
+.popover-mapstyle .col:first-child {
+	padding-left: 10px;
+}
+.popover-mapstyle .col:last-child {
+	padding-right: 10px;
+}
+
+.popover-mapstyle .mapstyle_style {
+	width: 40px;
+	height: 40px;
+	cursor: pointer;
+	text-align: center;
+	border-radius: 3px;
+}
+
+.popover-mapstyle .mapstyle_style img {
+	width: 95%;
+	height: 95%;
+	margin: 2.5%;
+	opacity: 0;
+	transition: 0.5s;
+}
+.popover-mapstyle .mapstyle_style:hover img {
+	opacity: 0.8;
+}
+.popover-mapstyle .mapstyle_style.checked img {
+	opacity: 1;
+}
+
+.popover-mapstyle .mapstyle_style.mapstyle1 {
+	background-color: #eddfae;
+}
+.popover-mapstyle .mapstyle_style.mapstyle2 {
+	background-color: #daf5d1;
+}
+.popover-mapstyle .mapstyle_style.mapstyle3 {
+	background-color: #f0ddd6;
+}

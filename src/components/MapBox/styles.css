@@ -1,0 +1,244 @@
+.mapboxgl-popup-content {
+  border-radius: 10px!important;
+  padding: 0!important;
+  min-width: 350px!important;
+}
+
+.photopoint_content img {
+  max-width: 100%;
+  border-radius: 10px;
+  min-height: 200px;
+  max-height: 100%;
+  max-width: 350px;
+}
+
+.photopoint_content .photo_desc_wrap {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-radius: 0 0 10px 10px;
+  background: white;
+  background: linear-gradient(0deg, white 8%, rgba(255, 255, 255, 0.951418) 38%, rgba(255, 255, 255, 0.525648) 85%, rgba(255, 255, 255, 0) 100%);
+}
+
+.photopoint_content .photo_desc {
+  font-size: 14px;
+  text-align: center;
+  margin: 0;
+  padding: 10px;
+  color: #2b2b2b;
+}
+
+
+.mapobject_content {
+  margin: 10px;
+  color: #000;
+  text-align: center;
+  max-width: 350px;
+}
+
+.mapobject_content .mapobject_type {
+  font-size: 14px;
+  background-color: #b99764;
+  color: #fff;
+  padding: 2px 5px 2px 5px;
+  display: inline-block;
+  border-radius: 5px;
+  margin: 0 0 5px;
+}
+
+.mapobject_content .mapobject_heading {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.mapobject_dates .mapobject_dates-start, .mapobject_dates .mapobject_dates-end {
+  text-align: center;
+  width: 45%;
+  display: inline-block;
+  margin: 0 2.5%;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  padding: 5px 0;
+  font-size: 14px;
+  color: #4e4e4e;
+}
+
+.mapobject_dates span {
+  display: block;
+  font-size: 16px;
+  color: #000;
+}
+
+.mapobject_buttons {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.mapobject_buttons .mapobject_button-wrap {
+  display: inline-block;
+  width: 135px;
+}
+
+.mapobject_buttons .mapobject_button {
+  width: 130px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 25px;
+  font-size: 13px;
+  line-height: 14px;
+  text-align: center;
+  margin: 0px auto 0px auto;
+  cursor: pointer;
+  border: solid 1px #b5b5b5;
+  color: #2b2b2b;
+  transition: all 0.4s ease;
+}
+
+.navControl {
+  position: absolute;
+  right: 10px;
+  top: calc(50% - 40px);
+}
+
+.mapboxgl-ctrl-icon.mapboxgl-ctrl-compass > .mapboxgl-ctrl-compass-arrow {
+    width: 20px;
+    height: 20px;
+    margin: 5px;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E %3Cpolygon fill='%23FFFFFF' points='6,9 10,1 14,9'/%3E %3Cpolygon fill='%23000000' points='6,11 10,19 14,11 '/%3E %3C/svg%3E");
+    background-repeat: no-repeat;
+    display: inline-block;
+}
+
+.mapboxgl-ctrl-group:not(:empty) {
+  background-color: rgba(185, 151, 101, 0.8)!important;
+  box-shadow: 0 0 0 2px rgba(185, 151, 101, 1)!important;
+}
+.mapboxgl-ctrl button:not(:disabled):hover {
+  background-color: rgba(185, 151, 101, 1)!important;
+}
+
+.mapboxgl-ctrl-icon.mapboxgl-ctrl-zoom-out {
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E %3Cpath style='fill:%23FFFFFF;' d='m 7,9 c -0.554,0 -1,0.446 -1,1 0,0.554 0.446,1 1,1 l 6,0 c 0.554,0 1,-0.446 1,-1 0,-0.554 -0.446,-1 -1,-1 z'/%3E %3C/svg%3E");
+}
+
+.mapboxgl-ctrl-icon.mapboxgl-ctrl-zoom-in {
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E %3Cpath style='fill:%23FFFFFF;' d='M 10 6 C 9.446 6 9 6.4459904 9 7 L 9 9 L 7 9 C 6.446 9 6 9.446 6 10 C 6 10.554 6.446 11 7 11 L 9 11 L 9 13 C 9 13.55401 9.446 14 10 14 C 10.554 14 11 13.55401 11 13 L 11 11 L 13 11 C 13.554 11 14 10.554 14 10 C 14 9.446 13.554 9 13 9 L 11 9 L 11 7 C 11 6.4459904 10.554 6 10 6 z'/%3E %3C/svg%3E");
+}
+
+.mapboxgl-ctrl-group button:focus {
+  box-shadow: 0 0 0 0 #fff!important;
+  outline: 0;
+}
+
+
+
+.railroad_content .railway-header {
+    background-color: #bfa277;
+    border-radius: 10px 10px 0px 0px;
+    color: #fff;
+}
+
+.railroad_content .railway-header.active {
+    border-bottom: 5px solid #72bb2f;
+}
+
+.railroad_content .hidden {
+    opacity: 0;
+    pointer-events: none;
+    transitions: 0.3s;
+    display: none;
+}
+
+.railroad_content .railway-header-left {
+    position: absolute;
+    display: inline-block;
+    left: 0;
+    top: 0;
+    width: 32%;
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.railroad_content .railway-header-center {
+    display: inline-block;
+    text-align: center;
+    width: 36%;
+    margin: 0 32%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 21px;
+}
+
+.railroad_content .railway-header-center::before {
+    content: "ПОСЛЕ";
+    position: relative;
+    top: -2px;
+    left: -5px;
+    font-size: 11px;
+    height: 40px;
+}
+
+.railroad_content .railway-header-right {
+    position: absolute;
+    display: inline-block;
+    right: 0;
+    top: 0;
+    width: 32%;
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.railroad_content .railway-content-header {
+  margin: 10px 10px 15px 10px;
+  color: #000;
+  font-size: 16px;
+  text-align: center;
+}
+
+.railroad_content .railway-content-railway {
+    margin: 10px;
+    color: #000;
+}
+
+.railroad_content .railway-content-railway .railway-content-railway-old {
+    font-size: 14px;
+    color: #777c;
+    margin-bottom: 5px;
+}
+
+.railway-content-width-header, .railway-content-length-header {
+    font-size: 15px;
+    color: #5f5f5f;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.railway-content-width, .railway-content-length {
+    width: 45%;
+    margin: 2.5% 2.5% 5% 2.5%;
+    display: inline-block;
+    color: #000;
+    vertical-align: top;
+}
+
+
+
+
+
+
+
+
+
+

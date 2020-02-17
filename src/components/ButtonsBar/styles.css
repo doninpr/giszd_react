@@ -1,0 +1,30 @@
+.buttonsBar {
+	position: absolute;
+	top: 7px;
+	right: 7px;
+}
+.buttonsBar button {
+	display: block;
+	width: 29px;
+	height: 29px;
+	margin: 3px;
+	background-color: rgba(185, 151, 101, 0.8);
+	border-color: rgba(185, 151, 101, 1);
+	padding: 5px 5px;
+}
+
+.buttonsBar button:hover {
+	border-color: rgba(185, 151, 101, 1);
+	background-color: rgba(185, 151, 101, 1);
+}
+
+.buttonsBar img {
+	vertical-align: top;
+	width: 100%;
+}
+
+.btn-primary.focus, .btn-primary:focus {
+    border-color: rgba(185, 151, 101, 1)!important;
+	background-color: rgba(185, 151, 101, 1)!important;
+    box-shadow: 0 0 0 0.2rem rgba(185, 151, 101,.5)!important;
+}

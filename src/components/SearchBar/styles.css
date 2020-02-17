@@ -1,0 +1,26 @@
+.searchBar {
+	position: absolute;
+	left: 7px;
+	top: 7px;
+	width: 350px;
+}
+
+.searchBar .input-group-text {
+	background-color: rgba(255, 255, 255, 1)!important;
+	border-color: rgba(185, 151, 101, 1)!important;
+	border-radius: 25px 0 0 25px;
+}
+
+.searchBar .form-control {
+	border-left: 0;
+	border-color: rgba(185, 151, 101, 1)!important;
+	border-radius: 0 5px 5px 0;
+}
+
+.form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: rgba(185, 151, 101, 1)!important;
+    outline: 0;
+    box-shadow: 0 0 0 0 rgba(255,255,255,.25)!important;
+}

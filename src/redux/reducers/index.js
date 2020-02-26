@@ -6,6 +6,9 @@ import window from "./window";
 import mapData from "./mapData";
 import popups from "./popups";
 import modal from "./modal";
+import storytelling from "./storytelling";
+import album from "./album";
+import search from "./search";
 
 
 export default combineReducers({
@@ -16,4 +19,7 @@ export default combineReducers({
 	mapData,
 	popups,
 	modal,
+	storytelling,
+	album,
+	search,
 });

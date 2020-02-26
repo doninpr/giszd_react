@@ -2,3 +2,15 @@ body {
   margin: 0;
   padding: 0;
 }
+
+button:focus {
+	outline: 0px!important;
+}
+
+.heigth-page {
+	position: fixed;
+	z-index: 99999;
+	top: 5px;
+	left: 5px;
+	background-color: #fff;
+}

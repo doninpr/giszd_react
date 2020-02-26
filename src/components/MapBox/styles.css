@@ -1,10 +1,20 @@
+#map-container {
+	top: 0;
+	left: 0;
+	position: fixed;
+	height: 100vh;
+	width: 100vw;
+	overflow: hidden;
+	
+}
+
 .mapboxgl-popup-content {
   border-radius: 10px!important;
   padding: 0!important;
   min-width: 350px!important;
 }
 
-.photopoint_content img {
+.photopoint_content img.photo {
   max-width: 100%;
   border-radius: 10px;
   min-height: 200px;
@@ -233,7 +243,25 @@
     vertical-align: top;
 }
 
+.hidden-popup {
+  display: none!important;
+}
 
+.disabled-map {
+  pointer-events: none!important;
+}
+
+.expand-photo img {
+  max-width: 21px;
+}
+
+.expand-photo {
+  cursor: pointer;
+  pointer-events: all;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
 
 
 

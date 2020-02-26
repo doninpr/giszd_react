@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import cx from "classnames";
 import _ from "lodash";
+import turf from "turf";
 import ReactMapGL, { Popup, NavigationControl } from 'react-map-gl';
 import {
   changeFiltersOnMap,
@@ -18,11 +19,20 @@ import {
   hideAllPopups,
   showPopupRailroad,
   hidePopupRailroad,
+  fetchRailway,
+  doFlyTo,
+  railwaySelected,
+  setDefaultFlyTo,
+  showModal,
+  fetchAndShowAlbumByImageId,
 } from '../../redux/actions';
+import { Button } from 'react-bootstrap';
 import photopointImg from '../MapBox/images/photopoint.png';
 import mapobjectFactoryImg from '../MapBox/images/factory.png';
 import mapobjectWorkshopImg from '../MapBox/images/workshop.png';
 import mapobjectRoadImg from '../MapBox/images/road.png';
+import expandImg from '../MapBox/images/expand.png';
+import ModalMapobjectContent from '../Modals/ModalContents/Mapobject/Mapobject';
 import "./styles.css";
 import 'mapbox-gl/dist/mapbox-gl.css';
 
@@ -33,6 +43,10 @@ class MapBox extends React.Component {
     this._onClick = this._onClick.bind(this);
     this.props = props;
     this._map = React.createRef();
+  }
+
+  showStorytellingActions = (id) => {
+    this.props.fetchRailway(id);
   }
 
   getMergedFilters = (layer, filter) => {
@@ -53,6 +67,11 @@ class MapBox extends React.Component {
     newFilters.push(filter);
 
     return newFilters;
+  }
+
+  expandPhoto = (id) => {
+    this.props.fetchAndShowAlbumByImageId(id);
+    this.props.hideAllPopups();
   }
 
   getClearedFilters = (layer, param) => {
@@ -85,6 +104,11 @@ class MapBox extends React.Component {
     this._map.getMap().setFilter(layer, mergedFilters);
   }
 
+  setCurrentLocalRailwayFilter = (layer, id) => {
+    const mergedFilters = this.getMergedFilters(layer, ["match", ["get", "id"], [id], true, false]);
+    this._map.getMap().setFilter(layer, mergedFilters);
+  }
+
   setYearForStationsFilter = (layer, year) => {
     const mergedFilters = this.getMergedFilters(layer, ["<=", ["get", "year"], +year]);
     this._map.getMap().setFilter(layer, mergedFilters);
@@ -102,8 +126,6 @@ class MapBox extends React.Component {
     this.setEndYearFilter('local-railways-large', year);
 
     this.setYearForStationsFilter('stations', year);
-
-    this.setCurrentRailwayFilter('selected-railway', 1829);
 
     if(this._map.getMap().getLayer('mapobjects') !== undefined){
       this.setYearFilter('mapobjects', year);
@@ -132,10 +154,9 @@ class MapBox extends React.Component {
 
     const targetLayer = event.features[0] && event.features[0].layer.id;
 
-    console.log(event.features);
-
     if(targetLayer === "photopoints"){
       this.props.showPopupPhoto({
+        id: event.features[0].properties.id,
         coords: event.features[0].geometry.coordinates,
         image: event.features[0].properties.crop_image,
         description: event.features[0].properties.description,
@@ -157,10 +178,12 @@ class MapBox extends React.Component {
         return (obj.layer.id === "local-railways-large" || obj.layer.id === "local-railways-small" || obj.layer.id === "local-railways-builded");
       });
 
-      this.props.showPopupRailroad({
-        coords: event.lngLat,
-        ...event.features[featureKey].properties,
-      });
+      if(featureKey !== undefined){
+        this.props.showPopupRailroad({
+          coords: event.lngLat,
+          ...event.features[featureKey].properties,
+        });
+      }
     }
   }
 
@@ -170,6 +193,17 @@ class MapBox extends React.Component {
 
     this.props.fetchPhotos();
     this.props.fetchMapobjects();
+  }
+
+  doFlyTo = (props) => {
+    this._map.getMap().flyTo({
+      zoom: props.zoom,
+      pitch: props.pitch,
+      bearing: props.bearing,
+      center: props.center,
+    });
+
+    this.props.doFlyTo();
   }
 
   addPointIcon = (img, name) => {
@@ -186,6 +220,7 @@ class MapBox extends React.Component {
         'type': 'Feature',
         'geometry': obj.geometry,
         'properties': {
+          'id': obj.id,
           'description': obj.description,
           'crop_image': obj.crop_image.img_600,
         }
@@ -251,6 +286,34 @@ class MapBox extends React.Component {
   }
 
   render() {
+
+    if(this.props.defaultFlyTo === null && this.props.isStorytellingShown){
+      const bboxArray = turf.bbox( turf.lineString(this.props.railwayToShow.extent.coordinates[0]) );
+      const bbox = [ [bboxArray[0],bboxArray[1]], [bboxArray[2], bboxArray[3]] ];
+
+      let defaultFlyTo = this._map.getMap().cameraForBounds(bbox, {
+        padding: {top: 30, bottom: 30, left: 30, right: 30}
+      });
+
+      if(defaultFlyTo.zoom < 4){
+        defaultFlyTo.zoom = 4;
+      }
+
+      //defaultFlyTo.pitch = 60;
+
+      this.props.setDefaultFlyTo(defaultFlyTo);
+    }
+
+    if(this.props.selects.isUpdate){
+      this.setCurrentRailwayFilter('selected-railway', +this.props.selects.selectedRailway);
+      this.setCurrentLocalRailwayFilter('selected-local-railway', +this.props.selects.selectedLocalRailway);
+      this.props.railwaySelected();
+    }
+
+    if(this.props.flyTo.isUpdate){
+      this.doFlyTo(this.props.flyTo);
+    }
+
     if(!this.props.photopoints.isAddedOnMap && this.props.photopoints.isFinished){
       this.addPhotopointsLayer();
     }
@@ -265,17 +328,25 @@ class MapBox extends React.Component {
 
     return (
       <ReactMapGL
+        id={"map"}
         ref={map => this._map = map}
         mapboxApiAccessToken = { this.props.mapboxApiAccessToken }
         {...this.props.viewport}
-        onViewportChange={(viewport) => this.updateViewport(viewport)}
+        onViewportChange={(viewport) => {
+          if(!this.props.isStorytellingShown){
+            this.updateViewport(viewport);
+          }
+        }}
         onLoad={() => this.mapboxReady()}
         onClick={event => this._onClick(event)}
-        clickRadius={1}
+        clickRadius={7}
+        minZoom={4}
       >
-        <div class="navControl">
-          <NavigationControl />
-        </div>
+        {!this.props.isStorytellingShown &&
+          <div class="navControl">
+            <NavigationControl />
+          </div>
+        }
         {this.props.popups.photo.isShow &&
           <Popup
             latitude={this.props.popups.photo.coords[1]}
@@ -286,17 +357,19 @@ class MapBox extends React.Component {
             anchor="bottom"
           >
             <div class="photopoint_content">
-              <img src={"http://2.59.42.199:8888" + this.props.popups.photo.image} />
+              <img className={'photo'} src={"http://2.59.42.199:8888" + this.props.popups.photo.image} />
               <div class="photo_desc_wrap">
                 <div class="photo_desc">
                   {this.props.popups.photo.description}
                 </div>
               </div>
+              <div className={'expand-photo'} onClick={() => this.expandPhoto(this.props.popups.photo.id)} ><img src={expandImg} /></div>
             </div>
           </Popup>
         }
         {this.props.popups.railroad.isShow &&
           <Popup
+            className={this.props.isStorytellingShown ? "hidden-popup" : ""}
             latitude={this.props.popups.railroad.coords[1]}
             longitude={this.props.popups.railroad.coords[0]}
             closeButton={false}
@@ -318,6 +391,7 @@ class MapBox extends React.Component {
                     null ж.д.
                   </div>
                   <div class="railway-content-railway-new">{this.props.popups.railroad.railway_name}</div>
+                  <Button variant="primary" size="sm" onClick={() => this.showStorytellingActions(this.props.popups.railroad.railway_id)}>Подробнее</Button>
                 </div>
                 <div class="railway-content-width">
                   <div class="railway-content-width-header">Ширина колеи:</div>
@@ -351,9 +425,18 @@ class MapBox extends React.Component {
               </div>
               <div class="mapobject_buttons">
                 <div class="mapobject_button-wrap">
-                  <div class="mapobject_button">Подробнее</div>
+                  <div
+                    class="mapobject_button"
+                    onClick={
+                      () => this.props.showModal({
+                        header: this.props.popups.mapobject.title,
+                        content: ModalMapobjectContent,
+                        params: { id: this.props.popups.mapobject.id }
+                      })
+                    }
+                  >Подробнее</div>
                 </div>
-                {this.props.popups.mapobject.images.length !== 0 &&
+                {false &&
                   <div class="mapobject_button-wrap">
                     <div class="mapobject_button">Вложения</div>
                   </div>
@@ -369,12 +452,18 @@ class MapBox extends React.Component {
 
 const mapStateToProps = state => {
   return {
+    window: state.window,
   	viewport: state.mapbox.viewport,
+    selects: state.mapbox.selects,
     isFiltersChanged: state.mapFilters.isFiltersChanged,
     currentYear: state.timeline.currentYear,
     photopoints: state.mapData.photopoints,
     mapobjects: state.mapData.mapobjects,
     popups: state.popups,
+    railwayToShow: state.storytelling.railwayToShow,
+    defaultFlyTo: state.storytelling.defaultFlyTo,
+    isStorytellingShown: state.storytelling.isShown,
+    flyTo: state.mapbox.flyTo,
   };
 };
 
@@ -395,6 +484,12 @@ export default connect(
     hideAllPopups,
     showPopupRailroad,
     hidePopupRailroad,
+    fetchRailway,
+    doFlyTo,
+    railwaySelected,
+    setDefaultFlyTo,
+    showModal,
+    fetchAndShowAlbumByImageId,
   },
 )(MapBox);
 

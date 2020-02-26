@@ -1,0 +1,27 @@
+.modal-mapobject_dates {
+	text-align: center;
+	width: 100%;
+}
+
+.mapobject-descr {
+	margin: 25px auto;
+}
+
+.modal-mapobject_date {
+	height: 60px;
+	text-align: center;
+    width: 45%;
+    display: inline-block;
+    margin: 0;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #4e4e4e;
+    padding: 15px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.modal-mapobject_date:last-child {
+    margin-bottom: 0px;
+}

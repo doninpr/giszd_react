@@ -1,4 +1,5 @@
-import fetch from 'cross-fetch'
+import fetch from 'cross-fetch';
+import _ from 'lodash';
 import { API_DOMAIN } from '../constants';
 import {
 	CHANGE_TIMELINE_YEAR,
@@ -23,6 +24,23 @@ import {
   HIDE_ALL_POPUPS,
   SHOW_MODAL,
   HIDE_MODAL,
+  SHOW_STORYTELLING,
+  HIDE_STORYTELLING,
+  MAPBOX_SET_FLYTO,
+  MAPBOX_DO_FLYTO,
+  API_GET_RAILWAY_START,
+  API_GET_RAILWAY_END,
+  API_GET_RAILWAY,
+  RAILWAY_SELECTED,
+  SET_DEFAULT_FLYTO,
+  API_GET_ALBUM,
+  SHOW_ALBUM,
+  HIDE_ALBUM,
+  API_GET_ALBUM_START,
+  SELECT_RAILROAD,
+  API_SEARCH_START,
+  API_SEARCH_GET,
+  HIDE_SEARCH_RESULTS,
 } from "./actionTypes";
 
 
@@ -49,6 +67,18 @@ export const mapboxViewportChange = (viewport) => ({
   payload: {
     viewport
   }
+});
+
+export const setFlyTo = (props) => ({
+  type: MAPBOX_SET_FLYTO,
+  payload: {
+    ...props,
+  }
+});
+
+export const doFlyTo = () => ({
+  type: MAPBOX_DO_FLYTO,
+  payload: {}
 });
 
 export const changeWindowSize = (width, height) => ({
@@ -103,9 +133,10 @@ export const endFetchMapobjects = () => ({
   payload: {}
 });
 
-export const showPopupPhoto = ({ coords, image, description }) => ({
+export const showPopupPhoto = ({ id, coords, image, description }) => ({
   type: SHOW_POPUP_PHOTO,
   payload: {
+    id,
     coords,
     image,
     description
@@ -115,6 +146,13 @@ export const showPopupPhoto = ({ coords, image, description }) => ({
 export const hidePopupPhoto = () => ({
   type: HIDE_POPUP_PHOTO,
   payload: {}
+});
+
+export const selectRailroad = (id) => ({
+  type: SELECT_RAILROAD,
+  payload: {
+    id
+  }
 });
 
 export const showPopupRailroad = (params) => ({
@@ -165,7 +203,88 @@ export const hideModal = () => ({
   payload: {}
 });
 
+export const showStorytelling = (responce) => ({
+  type: SHOW_STORYTELLING,
+  payload: {
+    responce
+  }
+});
 
+export const hideStorytelling = () => ({
+  type: HIDE_STORYTELLING,
+  payload: {}
+});
+
+export const startFetchRailway = () => ({
+  type: API_GET_RAILWAY_START,
+  payload: {}
+});
+
+export const endFetchRailway = () => ({
+  type: API_GET_RAILWAY_END,
+  payload: {}
+});
+
+export const receiveRailway = (responce) => ({
+  type: API_GET_RAILWAY,
+  payload: {
+    responce
+  }
+});
+
+export const railwaySelected = () => ({
+  type: RAILWAY_SELECTED,
+  payload: {}
+});
+
+export const setDefaultFlyTo = (params) => ({
+  type: SET_DEFAULT_FLYTO,
+  payload: {
+    params,
+  }
+});
+
+export const receiveAlbum = (responce) => ({
+  type: API_GET_ALBUM,
+  payload: {
+    responce,
+  }
+});
+
+export const showAlbum = (album) => ({
+  type: SHOW_ALBUM,
+  payload: {
+    album,
+  }
+});
+
+export const hideAlbum = () => ({
+  type: HIDE_ALBUM,
+  payload: {}
+});
+
+export const startFetchAlbum = () => ({
+  type: API_GET_ALBUM_START,
+  payload: {}
+});
+
+export const startFetchSearch = () => ({
+  type: API_SEARCH_START,
+  payload: {}
+});
+
+export const getFetchSearch = ({ stations, railways }) => ({
+  type: API_SEARCH_GET,
+  payload: {
+    stations,
+    railways
+  }
+});
+
+export const hideSearchResults = () => ({
+  type: HIDE_SEARCH_RESULTS,
+  payload: {}
+});
 
 //API
 export const fetchPhotos = (url = '/photo/?geodata=true') => {
@@ -192,6 +311,74 @@ export const fetchMapobjects = (url = '/map-objects/') => {
       .then(json => {
         dispatch(receiveMapobjects(json));
         dispatch(endFetchMapobjects());
+      })
+  }
+}
+
+export const fetchRailway = (id, url = '/railway/') => {
+  return dispatch => {
+    dispatch(startFetchRailway());
+    fetch(API_DOMAIN + url + id + "/")
+      .then(response => response.json())
+      .then(json => {
+        dispatch(receiveRailway(json));
+        dispatch(endFetchRailway());
+        if(json.album.length > 0){
+          _.map(json.album, (album) => {
+            dispatch(fetchAlbum(album));
+          });
+        }
+        dispatch(showStorytelling(json));
+      })
+  }
+}
+
+export const fetchAlbum = (id, url = '/album/') => {
+  return dispatch => {
+    dispatch(startFetchAlbum());
+    fetch(API_DOMAIN + url + id + "/")
+      .then(response => response.json())
+      .then(json => {
+        dispatch(receiveAlbum(json));
+      })
+  }
+}
+
+export const fetchAlbumAndShow = (id, url = '/album/') => {
+  return dispatch => {
+    dispatch(startFetchAlbum());
+    fetch(API_DOMAIN + url + id + "/")
+      .then(response => response.json())
+      .then(json => {
+        dispatch(receiveAlbum(json));
+        dispatch(showAlbum(json));
+      })
+  }
+}
+
+export const fetchAndShowAlbumByImageId = (id, url = '/photo/') => {
+  return dispatch => {
+    fetch(API_DOMAIN + url + id + "/")
+      .then(response => response.json())
+      .then(json => {
+        if(json.imagealbum.length > 0) {
+          dispatch(fetchAlbumAndShow(json.imagealbum[0]));
+        }
+      })
+  }
+}
+export const fetchSearch = (query, url = '/search/') => {
+  return dispatch => {
+    dispatch(startFetchSearch());
+    fetch(API_DOMAIN + "/railway" + url + "?search=" + query)
+      .then(response => response.json())
+      .then(json => {
+        dispatch(getFetchSearch({ railways: json.results }));
+      })
+    fetch(API_DOMAIN + "/station" + url + "?search=" + query)
+      .then(response => response.json())
+      .then(json => {
+        dispatch(getFetchSearch({ stations: json.results }));
       })
   }
 }

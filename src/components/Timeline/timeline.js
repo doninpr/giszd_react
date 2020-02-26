@@ -11,13 +11,16 @@ const Timeline = ({ id, params, currentYear, setYear }) => {
       <Nouislider
         id={id}
         {...params}
+        start={[currentYear]}
         onChange={(year) => setYear(year[0])}
       />
   );
 };
 
 const mapStateToProps = state => {
-  return { currentYear: state.currentYear };
+  return {
+    currentYear: state.timeline.currentYear,
+  };
 };
 
 export default connect(

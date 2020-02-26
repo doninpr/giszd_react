@@ -1,8 +1,9 @@
-import { CHANGE_TIMELINE_YEAR } from "../actionTypes";
+import { CHANGE_TIMELINE_YEAR, SHOW_STORYTELLING, HIDE_STORYTELLING } from "../actionTypes";
 import { TIMELINE } from "../../constants";
 
 const initialState = {
   currentYear: TIMELINE.start[0],
+  lastYear: null,
 };
 
 export default function(state = initialState, action) {
@@ -12,6 +13,18 @@ export default function(state = initialState, action) {
       return {
         ...state,
         currentYear
+      };
+    }
+    case SHOW_STORYTELLING: {
+      return {
+        ...state,
+        lastYear: state.currentYear,
+      };
+    }
+    case HIDE_STORYTELLING: {
+      return {
+        ...state,
+        lastYear: null,
       };
     }
     default:

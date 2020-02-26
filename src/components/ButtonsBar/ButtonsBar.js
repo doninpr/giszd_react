@@ -12,7 +12,7 @@ import ModalAboutContent from '../Modals/ModalContents/About/About';
 import ModalLegendContent from '../Modals/ModalContents/Legend/Legend';
 import PopoverComponent from '../Popovers/PopoverComponent/PopoverComponent';
 import PopoverMapstyleContent from '../Popovers/Contents/Mapstyle/Mapstyle';
-import PopoverFiltersContent from '../Popovers/Contents/Filters/Filters';
+import ModalFiltersContent from '../Modals/ModalContents/Filters/Filters';
 
 import "./styles.css";
 
@@ -27,17 +27,7 @@ class ButtonsBar extends React.Component {
       <div class="buttonsBar">
         <Button size="sm" value={1} onClick={() => this.props.showModal({ header: "О проекте", content: ModalAboutContent })} ><img src={aboutUsImg} /></Button>
         <Button size="sm" value={2} onClick={() => this.props.showModal({ header: "Условные обозначения", content: ModalLegendContent, size: 'md' })} ><img src={legendImg} /></Button>
-        <OverlayTrigger
-          trigger="click"
-          placement="left"
-          overlay={
-            <PopoverComponent header="Фильтры">
-              <PopoverFiltersContent />
-            </PopoverComponent>
-          }
-        >
-          <Button size="sm" value={3} ><img src={filterImg} /></Button>
-        </OverlayTrigger>
+        <Button size="sm" value={3} onClick={() => this.props.showModal({ header: "Фильтры", content: ModalFiltersContent,  size: 'sm' })} ><img src={filterImg} /></Button>
         <OverlayTrigger
           trigger="click"
           placement="left"

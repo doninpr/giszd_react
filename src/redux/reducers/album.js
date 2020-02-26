@@ -1,25 +1,26 @@
-import { SHOW_MODAL, HIDE_MODAL } from "../actionTypes";
+import {
+  SHOW_ALBUM,
+  HIDE_ALBUM,
+} from "../actionTypes";
 
 const initialState = {
+  album: null,
   isShown: false,
-  header: '',
-  content: '',
-  props: {},
-  size: 'lg',
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case SHOW_MODAL: {
-      return {
-        ...initialState,
-        isShown: true,
-        ...action.payload,
-      };
-    }
-    case HIDE_MODAL: {
+    case SHOW_ALBUM: {
       return {
         ...state,
+        album: action.payload.album,
+        isShown: true,
+      };
+    }
+    case HIDE_ALBUM: {
+      return {
+        ...state,
+        album: null,
         isShown: false,
       };
     }

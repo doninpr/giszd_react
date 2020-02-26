@@ -11,6 +11,7 @@ import {
 const initialState = {
   photo: {
     isShow: false,
+    id: null,
     image: '',
     description: '',
     coords: [],
@@ -43,6 +44,7 @@ export default function(state = initialState, action) {
         photo: {
           ...state.photo,
           isShow: true,
+          id: action.payload.id,
           image: action.payload.image,
           description: action.payload.description,
           coords: action.payload.coords,
@@ -55,6 +57,7 @@ export default function(state = initialState, action) {
         photo: {
           ...state.photo,
           isShow: false,
+          id: null,
           image: '',
           description: '',
           coords: [],

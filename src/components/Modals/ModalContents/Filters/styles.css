@@ -1,0 +1,61 @@
+.modal-filters {
+	text-align: center;
+}
+
+.modal-filters .row {
+	margin-bottom: 5px;
+}
+
+.modal-filter-img {
+	width: 16px;
+	margin-right: 10px;
+}
+
+.filters-heading {
+	margin-top: 20px;
+}
+
+.filter-button-visible .filter-img-unvisible {
+	display: none;
+}
+
+.filter-button-visible .filter-img-visible {
+	display: inline-block;
+}
+
+.filter-button-visible:hover {
+	background-color: #fff!important;
+	color: #000!important;
+}
+
+.filter-button-visible:hover .filter-img-unvisible {
+	display: inline-block;
+}
+
+.filter-button-visible:hover .filter-img-visible {
+	display: none;
+}
+
+.filter-button-unvisible {
+	color: #000!important;
+}
+
+.filter-button-unvisible .filter-img-visible {
+	display: none;
+}
+
+.filter-button-unvisible .filter-img-unvisible {
+	display: inline-block;
+}
+
+.filter-button-unvisible:hover {
+	color: #fff!important;
+}
+
+.filter-button-unvisible:hover .filter-img-visible {
+	display: inline-block;
+}
+
+.filter-button-unvisible:hover .filter-img-unvisible {
+	display: none;
+}

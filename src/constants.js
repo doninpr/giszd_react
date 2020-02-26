@@ -10,13 +10,13 @@ export const MAPBOX = {
     latitude: 56.056516,
     longitude: 38.263599,
     zoom: 4,
-    mapStyle: 'mapbox://styles/doninpr/ck5fks8oj2cht1ir2dnsnhb6y',
+    mapStyle: 'mapbox://styles/doninpr/ck6vceaxf0aex1iqrd1kjw0q7',
   }
 }
 
 export const TIMELINE = {
   range: {min: 1838, max: 1930},
-  start: [1871],
+  start: [1927],
   tooltips: true,
   pips: {mode: 'count', values: 10},
   ariaFormat: wNumb({

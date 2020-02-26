@@ -14,6 +14,7 @@ class ModalComponent extends React.Component {
 
   render() {
     const ModalContent = this.props.content;
+    const params = this.props.params;
 
     return (
       <div class="modalComponent">
@@ -31,7 +32,7 @@ class ModalComponent extends React.Component {
           </Modal.Header>
           <Modal.Body>
             {ModalContent &&
-              <ModalContent />
+              <ModalContent params={params} />
             }
           </Modal.Body>
           <Modal.Footer>
@@ -49,6 +50,7 @@ const mapStateToProps = state => {
     header: state.modal.header,
     content: state.modal.content,
     size: state.modal.size,
+    params: state.modal.params,
   };
 };
 
